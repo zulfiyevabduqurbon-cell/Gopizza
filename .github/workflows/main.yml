@@ -21,8 +21,12 @@ jobs:
           cp index.html www/index.html
           npm init -y
           npm install @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6
-          npx cap init Crispy uz.crispy.app --web-dir www
+          npx cap init GoPizza uz.gopizza.app --web-dir www
           npx cap add android
+          mkdir -p assets
+          cp icon.png assets/icon.png
+          npm install @capacitor/assets
+          npx capacitor-assets generate --android --iconBackgroundColor '#ffffff' || echo "Ikonka yaratilmadi"
           npx cap sync android
       - name: APK yigish
         run: |
@@ -31,5 +35,5 @@ jobs:
           ./gradlew assembleDebug
       - uses: actions/upload-artifact@v4
         with:
-          name: crispy-apk
+          name: gopizza-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
