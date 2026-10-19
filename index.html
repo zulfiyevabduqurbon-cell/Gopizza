@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Crispy — tez ovqat buyurtmasi</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Nunito+Sans:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#fff8dc;--surface:#ffffff;--ink:#1d1a2b;--muted:#6b6678;--red:#e4262c;--yellow:#ffd21f;--line:#eadfb8;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17141f;--surface:#241f31;--ink:#fff4d6;--muted:#a9a2b8;--line:#382f4a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#17141f;--surface:#241f31;--ink:#fff4d6;--muted:#a9a2b8;--line:#382f4a;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Nunito Sans",system-ui,sans-serif;font-size:16px;line-height:1.45}
+h1,h2,h3{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;margin:0;letter-spacing:.2px}
+header{background:var(--red);color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--red);z-index:10}
+.logo{font-family:"Archivo Black",Impact,sans-serif;font-size:26px;display:flex;align-items:center;gap:8px}
+.logo span{background:var(--yellow);color:var(--ink);border-radius:8px;padding:0 8px;transform:rotate(-3deg);display:inline-block}
+.cartbtn{background:var(--yellow);color:#1d1a2b;border:0;border-radius:999px;padding:10px 16px;font:800 15px "Nunito Sans",sans-serif;cursor:pointer}
+.hero{background:var(--yellow);color:#1d1a2b;padding:22px 16px;display:flex;align-items:center;gap:12px;justify-content:space-between}
+.hero h1{font-size:clamp(26px,6vw,42px);line-height:1.05;max-width:11ch}
+.hero p{margin:8px 0 0;font-weight:600}
+.hero .big{font-size:84px;line-height:1}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:14px 16px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 62px);background:var(--bg);z-index:4}
+.tab{flex:none;border:2px solid var(--ink);background:transparent;color:var(--ink);border-radius:999px;padding:8px 16px;font:800 14px "Nunito Sans",sans-serif;cursor:pointer}
+.tab[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+main{max-width:980px;margin:0 auto;padding:0 16px 120px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.item{background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:14px;display:flex;flex-direction:column}
+.pic{font-size:64px;text-align:center;background:var(--bg);border-radius:12px;padding:10px 0;margin-bottom:10px}
+.item h3{font-size:17px}
+.item p{color:var(--muted);font-size:14px;margin:4px 0 12px;flex:1}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.price{font-weight:800}
+.add{background:var(--red);color:#fff;border:0;border-radius:10px;padding:8px 14px;font:800 14px "Nunito Sans",sans-serif;cursor:pointer}
+button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;z-index:20}
+.scrim.on{display:block}
+.drawer{position:fixed;right:0;top:0;bottom:0;width:min(420px,100%);background:var(--surface);z-index:21;transform:translateX(100%);transition:transform .25s;display:flex;flex-direction:column;padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px))}
+.drawer.on{transform:none}
+.lines{flex:1;overflow:auto;margin:12px 0}
+.line{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.line .e{font-size:30px}
+.line .n{flex:1;font-weight:700}
+.line .n small{display:block;color:var(--muted);font-weight:400}
+.qty{display:flex;align-items:center;gap:8px}
+.qty button{width:30px;height:30px;border-radius:50%;border:2px solid var(--ink);background:transparent;color:var(--ink);font-weight:800;cursor:pointer}
+.total{display:flex;justify-content:space-between;font-size:20px;font-weight:800;margin-bottom:10px}
+.order{width:100%;background:var(--red);color:#fff;border:0;border-radius:14px;padding:14px;font:800 17px "Nunito Sans",sans-serif;cursor:pointer}
+.order:disabled{opacity:.4;cursor:not-allowed}
+.field{width:100%;padding:11px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink);font:16px "Nunito Sans",sans-serif;margin-bottom:8px}
+.empty{color:var(--muted);text-align:center;padding:40px 0}
+.done{text-align:center;padding:30px 0}
+.done .big{font-size:72px}
+.bar{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);border-radius:16px;padding:14px 18px;display:none;justify-content:space-between;align-items:center;font-weight:800;cursor:pointer;z-index:6;max-width:600px;margin:0 auto}
+.bar.on{display:flex}
+@media (prefers-reduced-motion:reduce){.drawer{transition:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><span>C</span>rispy</div>
+  <button class="cartbtn" id="open">Savat (<b id="cnt">0</b>)</button>
+</header>
+<section class="hero">
+  <div>
+    <h1>Qarsildoq tovuq, issiq yetkazib beramiz</h1>
+    <p>30 daqiqada eshigingizda</p>
+  </div>
+  <div class="big" aria-hidden="true">🍗</div>
+</section>
+<nav class="tabs" id="tabs" aria-label="Kategoriyalar"></nav>
+<main><div class="grid" id="grid"></div></main>
+<div class="bar" id="bar"><span id="barTxt"></span><span>Savatni ochish</span></div>
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Savat">
+  <div class="row"><h2>Savat</h2><button class="tab" id="close">Yopish</button></div>
+  <div class="lines" id="lines"></div>
+  <div id="foot"></div>
+</aside>
+<script>
+const fmt=n=>n.toLocaleString("ru-RU").replace(/\u00a0/g," ")+" so’m";
+const MENU=[
+{id:1,c:"Tovuq",e:"🍗",n:"Qarsildoq tovuq (3 dona)",d:"Maxsus ziravorli, oltin qobiqda",p:38000},
+{id:2,c:"Tovuq",e:"🍗",n:"Qarsildoq tovuq (6 dona)",d:"Oilaviy porsiya",p:72000},
+{id:3,c:"Tovuq",e:"🍖",n:"Achchiq qanotchalar (8 dona)",d:"Shirin-achchiq sous bilan",p:45000},
+{id:4,c:"Tovuq",e:"🥡",n:"Tovuq bo’laklari (10 dona)",d:"Nuggets, 2 ta sous bilan",p:34000},
+{id:5,c:"Burger",e:"🍔",n:"Crispy burger",d:"Tovuq filesi, salat, mayonez",p:32000},
+{id:6,c:"Burger",e:"🍔",n:"Double burger",d:"Ikki fileli, pishloqli",p:46000},
+{id:7,c:"Burger",e:"🌯",n:"Tovuqli lavash",d:"Fri kartoshka va sous bilan",p:30000},
+{id:8,c:"Kombo",e:"🍱",n:"Yakka kombo",d:"Burger, fri, ichimlik",p:52000},
+{id:9,c:"Kombo",e:"🎉",n:"Do’stlar kombosi",d:"6 tovuq, 2 fri, 2 ichimlik",p:135000},
+{id:10,c:"Garnir",e:"🍟",n:"Fri kartoshka",d:"Katta porsiya",p:15000},
+{id:11,c:"Garnir",e:"🥗",n:"Karam salat",d:"Yengil va yangi",p:12000},
+{id:12,c:"Ichimlik",e:"🥤",n:"Kola 0.5 l",d:"Muzdek",p:9000},
+{id:13,c:"Ichimlik",e:"🧃",n:"Limonli choy",d:"Uy retsepti bo’yicha",p:11000},
+{id:14,c:"Shirinlik",e:"🍦",n:"Sovuq shirinlik",d:"Vanil muzqaymoq",p:14000}
+];
+const cats=["Hammasi",...new Set(MENU.map(m=>m.c))];
+let cat="Hammasi",cart={},done=false;
+const $=id=>document.getElementById(id);
+function renderTabs(){$("tabs").innerHTML=cats.map(c=>`<button class="tab" aria-pressed="${c===cat}" data-c="${c}">${c}</button>`).join("")}
+function renderGrid(){
+  $("grid").innerHTML=MENU.filter(m=>cat==="Hammasi"||m.c===cat).map(m=>`
+  <article class="item"><div class="pic" aria-hidden="true">${m.e}</div>
+  <h3>${m.n}</h3><p>${m.d}</p>
+  <div class="row"><span class="price">${fmt(m.p)}</span><button class="add" data-a="${m.id}">Qo’shish</button></div></article>`).join("")}
+function totals(){let n=0,s=0;for(const id in cart){n+=cart[id];s+=cart[id]*MENU.find(m=>m.id==id).p}return{n,s}}
+function renderCart(){
+  const {n,s}=totals();$("cnt").textContent=n;
+  $("bar").classList.toggle("on",n>0&&!$("drawer").classList.contains("on"));
+  $("barTxt").textContent=n+" ta mahsulot · "+fmt(s);
+  if(done){
+    $("lines").innerHTML=`<div class="done"><div class="big">🎉</div><h2>Buyurtma qabul qilindi</h2><p>Taxminan 30 daqiqada yetkazamiz. Buyurtma raqami: #${Math.floor(1000+Math.random()*9000)}</p></div>`;
+    $("foot").innerHTML=`<button class="order" id="again">Yangi buyurtma</button>`;return}
+  const ids=Object.keys(cart);
+  $("lines").innerHTML=ids.length?ids.map(id=>{const m=MENU.find(x=>x.id==id);return `<div class="line"><span class="e">${m.e}</span>
+  <div class="n">${m.n}<small>${fmt(m.p*cart[id])}</small></div>
+  <div class="qty"><button data-m="${id}" aria-label="Kamaytirish">−</button><b>${cart[id]}</b><button data-p="${id}" aria-label="Ko’paytirish">+</button></div></div>`}).join("")
+  :`<div class="empty">Savat bo’sh. Menyudan biror narsa tanlang.</div>`;
+  $("foot").innerHTML=`<div class="total"><span>Jami</span><span>${fmt(s)}</span></div>
+  <input class="field" id="addr" placeholder="Yetkazib berish manzili">
+  <input class="field" id="tel" type="tel" placeholder="Telefon raqami">
+  <button class="order" id="go" ${n?"":"disabled"}>Buyurtma berish</button>`}
+function open(v){$("drawer").classList.toggle("on",v);$("scrim").classList.toggle("on",v);if(!v&&done){done=false}renderCart()}
+document.addEventListener("click",e=>{
+  const t=e.target;
+  if(t.dataset.c){cat=t.dataset.c;renderTabs();renderGrid()}
+  if(t.dataset.a){cart[t.dataset.a]=(cart[t.dataset.a]||0)+1;renderCart()}
+  if(t.dataset.p){cart[t.dataset.p]++;renderCart()}
+  if(t.dataset.m){if(--cart[t.dataset.m]<=0)delete cart[t.dataset.m];renderCart()}
+  if(t.id==="go"){
+    if(!$("addr").value.trim()||!$("tel").value.trim()){alert("Manzil va telefon raqamini kiriting.");return}
+    cart={};done=true;renderCart()}
+  if(t.id==="again"){done=false;open(false)}
+  if(t.closest&&(t.closest("#bar")||t.id==="open"))open(true);
+  if(t.id==="close"||t.id==="scrim")open(false)});
+renderTabs();renderGrid();renderCart();
+</script>
+</body>
+</html>
