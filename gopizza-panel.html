@@ -42,7 +42,7 @@ a{color:inherit}
 <div class="tabs" id="tabs"></div>
 <main id="list"></main>
 <script>
-const FB={project:"FIREBASE_PROJECT_ID",key:""};
+const FB={project:"gopizzadem",key:""};
 const API="https://firestore.googleapis.com/v1/projects/"+FB.project+"/databases/(default)/documents/orders";
 const k=q=>(q?"?"+q:"")+(FB.key?(q?"&":"?")+"key="+FB.key:"");
 const TABS=[["new","Yangi"],["preparing","Tayyorlanmoqda"],["delivering","Yo’lda"],["done","Yetkazildi"]];

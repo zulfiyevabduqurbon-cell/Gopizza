@@ -101,7 +101,7 @@ const MENU=[
 const cats=["Hammasi",...new Set(MENU.map(m=>m.c))];
 let cat="Hammasi",cart={},done=false,orderNo=0;
 let orderId=null,status="new",timer=null;
-const FB={project:"FIREBASE_PROJECT_ID",key:""};
+const FB={project:"gopizzadem",key:""};
 const fbUrl=p=>"https://firestore.googleapis.com/v1/projects/"+FB.project+"/databases/(default)/documents/"+p+(FB.key?"?key="+FB.key:"");
 const STEPS={new:["Qabul qilindi","🧾"],preparing:["Tayyorlanmoqda","👨‍🍳"],delivering:["Yo’lda","🛵"],done:["Yetkazildi","✅"]};
 async function sendOrder(addr,tel){
