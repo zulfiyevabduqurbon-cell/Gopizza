@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
 jobs:
-  build:
+  customer:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,18 +15,15 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-      - name: Capacitor loyihasini tayyorlash
+      - name: Tayyorlash
         run: |
-          mkdir -p www
-          cp index.html www/index.html
+          mkdir -p www assets
+          cp gopizza-app.html www/index.html
           npm init -y
           npm install @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6
           npx cap init GoPizza uz.gopizza.app --web-dir www
           npx cap add android
-          mkdir -p assets
-          cp icon.png assets/icon.png
-          npm install @capacitor/assets
-          npx capacitor-assets generate --android --iconBackgroundColor '#ffffff' || echo "Ikonka yaratilmadi"
+          (cp gopizza-icon.png assets/icon.png && npm install @capacitor/assets && npx capacitor-assets generate --android --iconBackgroundColor '#ffffff') || echo "Ikonka qoyilmadi"
           npx cap sync android
       - name: APK yigish
         run: |
@@ -36,4 +33,34 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: gopizza-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+  panel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: Tayyorlash
+        run: |
+          mkdir -p www assets
+          cp gopizza-panel.html www/index.html
+          npm init -y
+          npm install @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6
+          npx cap init "GoPizza Panel" uz.gopizza.panel --web-dir www
+          npx cap add android
+          (cp gopizza-panel-icon.png assets/icon.png && npm install @capacitor/assets && npx capacitor-assets generate --android --iconBackgroundColor '#ffffff') || echo "Ikonka qoyilmadi"
+          npx cap sync android
+      - name: APK yigish
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gopizza-panel-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
